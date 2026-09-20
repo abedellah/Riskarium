@@ -8,7 +8,6 @@ from .catalog import ANNEX_A, ANNEX_A_TOTAL, CSF_CATEGORIES
 from .model import Case, Risk
 from .scoring import HORIZONS, LEVELS, horizon, level, summarize
 
-ICON = {"critique": "🟥", "élevé": "🟧", "moyen": "🟨", "faible": "🟩"}
 DECISION_FR = {
     "reduce": "Réduire",
     "accept": "Accepter",
@@ -27,7 +26,7 @@ def _num(value: float) -> str:
 
 def _badge(value: int) -> str:
     lv = level(value)
-    return f"{ICON[lv]} {lv}"
+    return lv
 
 
 def _ordered(case: Case) -> list[Risk]:
@@ -38,7 +37,7 @@ def _synthesis(case: Case) -> list[str]:
     s = summarize(case)
     lines = ["| Niveau | Avant traitement | Après traitement |", "|---|---:|---:|"]
     for lv in LEVELS:
-        lines.append(f"| {ICON[lv]} {lv} | {s.before[lv]} | {s.after[lv]} |")
+        lines.append(f"| {lv} | {s.before[lv]} | {s.after[lv]} |")
     lines += [
         "",
         f"Score moyen : **{_num(s.mean_before)}** avant traitement, **{_num(s.mean_after)}** "

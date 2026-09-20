@@ -10,10 +10,10 @@ Entre le 28 septembre et le 22 octobre 2024, un attaquant s'est connecté au ré
 
 | Niveau | Avant traitement | Après traitement |
 |---|---:|---:|
-| 🟥 critique | 4 | 0 |
-| 🟧 élevé | 2 | 1 |
-| 🟨 moyen | 0 | 2 |
-| 🟩 faible | 0 | 3 |
+| critique | 4 | 0 |
+| élevé | 2 | 1 |
+| moyen | 0 | 2 |
+| faible | 0 | 3 |
 
 Score moyen : **16,5** avant traitement, **6,3** après (soit **-62 %**).
 
@@ -23,12 +23,12 @@ Score moyen : **16,5** avant traitement, **6,3** après (soit **-62 %**).
 
 | ID | Risque | V | I | Score | Niveau | Confiance | Horizon |
 |---|---|:-:|:-:|:-:|---|---|---|
-| R1 | Compromission de l'accès distant (VPN) | 4 | 5 | 20 | 🟥 critique | élevée | 0-3 mois |
-| R2 | Extraction massive de données non détectée | 4 | 5 | 20 | 🟥 critique | élevée | 0-3 mois |
-| R6 | Réutilisation des données volées (hameçonnage, fraude) | 4 | 5 | 20 | 🟥 critique | moyenne | 0-3 mois |
-| R4 | Données d'anciens abonnés conservées trop longtemps | 5 | 3 | 15 | 🟥 critique | élevée | 0-3 mois |
-| R3 | Comptes de l'outil de gestion exposés (stockage faible des mots de passe) | 3 | 4 | 12 | 🟧 élevé | moyenne | 3-6 mois |
-| R5 | Information insuffisante des personnes concernées | 4 | 3 | 12 | 🟧 élevé | élevée | 3-6 mois |
+| R1 | Compromission de l'accès distant (VPN) | 4 | 5 | 20 | critique | élevée | 0-3 mois |
+| R2 | Extraction massive de données non détectée | 4 | 5 | 20 | critique | élevée | 0-3 mois |
+| R6 | Réutilisation des données volées (hameçonnage, fraude) | 4 | 5 | 20 | critique | moyenne | 0-3 mois |
+| R4 | Données d'anciens abonnés conservées trop longtemps | 5 | 3 | 15 | critique | élevée | 0-3 mois |
+| R3 | Comptes de l'outil de gestion exposés (stockage faible des mots de passe) | 3 | 4 | 12 | élevé | moyenne | 3-6 mois |
+| R5 | Information insuffisante des personnes concernées | 4 | 3 | 12 | élevé | élevée | 3-6 mois |
 
 ## Fiches risque
 
@@ -51,7 +51,7 @@ Score moyen : **16,5** avant traitement, **6,3** après (soit **-62 %**).
 - Authentification du poste par certificat machine avant l'ouverture du VPN
 - Segmentation : limiter ce que voit un utilisateur VPN au strict nécessaire
 
-Risque inhérent : 4 × 5 = **20** (🟥 critique). Risque résiduel visé : 2 × 4 = **8** (🟨 moyen). Confiance dans la cotation : élevée.
+Risque inhérent : 4 × 5 = **20** (critique). Risque résiduel visé : 2 × 4 = **8** (moyen). Confiance dans la cotation : élevée.
 
 ### R2 : Extraction massive de données non détectée
 
@@ -73,7 +73,7 @@ Risque inhérent : 4 × 5 = **20** (🟥 critique). Risque résiduel visé : 2 �
 - Alertes sur les volumes de requêtes et d'exports par compte et par session
 - Corréler VPN, réseau interne et journaux applicatifs dans un outil de supervision
 
-Risque inhérent : 4 × 5 = **20** (🟥 critique). Risque résiduel visé : 2 × 4 = **8** (🟨 moyen). Confiance dans la cotation : élevée.
+Risque inhérent : 4 × 5 = **20** (critique). Risque résiduel visé : 2 × 4 = **8** (moyen). Confiance dans la cotation : élevée.
 
 ### R6 : Réutilisation des données volées (hameçonnage, fraude)
 
@@ -92,7 +92,7 @@ Risque inhérent : 4 × 5 = **20** (🟥 critique). Risque résiduel visé : 2 �
 - Alerter les clients sur les risques d'hameçonnage et de fraude au prélèvement
 - Surveiller les motifs de fraude liés aux comptes exposés
 
-Risque inhérent : 4 × 5 = **20** (🟥 critique). Risque résiduel visé : 3 × 4 = **12** (🟧 élevé). Confiance dans la cotation : moyenne.
+Risque inhérent : 4 × 5 = **20** (critique). Risque résiduel visé : 3 × 4 = **12** (élevé). Confiance dans la cotation : moyenne.
 
 ### R4 : Données d'anciens abonnés conservées trop longtemps
 
@@ -111,7 +111,7 @@ Risque inhérent : 4 × 5 = **20** (🟥 critique). Risque résiduel visé : 3 �
 - Fixer des durées de conservation par catégorie de données et les faire appliquer par le système
 - Purger les dossiers échus, n'archiver que le nécessaire comptable, en accès restreint
 
-Risque inhérent : 5 × 3 = **15** (🟥 critique). Risque résiduel visé : 1 × 3 = **3** (🟩 faible). Confiance dans la cotation : élevée.
+Risque inhérent : 5 × 3 = **15** (critique). Risque résiduel visé : 1 × 3 = **3** (faible). Confiance dans la cotation : élevée.
 
 ### R3 : Comptes de l'outil de gestion exposés (stockage faible des mots de passe)
 
@@ -130,7 +130,7 @@ Risque inhérent : 5 × 3 = **15** (🟥 critique). Risque résiduel visé : 1 �
 - Hachage des mots de passe avec Argon2id ou bcrypt, et rehachage à la prochaine connexion
 - Authentification multifacteur sur l'outil lui-même
 
-Risque inhérent : 3 × 4 = **12** (🟧 élevé). Risque résiduel visé : 1 × 4 = **4** (🟩 faible). Confiance dans la cotation : moyenne.
+Risque inhérent : 3 × 4 = **12** (élevé). Risque résiduel visé : 1 × 4 = **4** (faible). Confiance dans la cotation : moyenne.
 
 ### R5 : Information insuffisante des personnes concernées
 
@@ -149,7 +149,7 @@ Risque inhérent : 3 × 4 = **12** (🟧 élevé). Risque résiduel visé : 1 ×
 - Inclure conséquences probables, mesures de protection et point de contact
 - Exercice annuel de gestion de crise incluant la communication
 
-Risque inhérent : 4 × 3 = **12** (🟧 élevé). Risque résiduel visé : 1 × 3 = **3** (🟩 faible). Confiance dans la cotation : élevée.
+Risque inhérent : 4 × 3 = **12** (élevé). Risque résiduel visé : 1 × 3 = **3** (faible). Confiance dans la cotation : élevée.
 
 ## Couverture ISO/IEC 27001 (Annexe A)
 
@@ -180,15 +180,15 @@ L'horizon découle du niveau du risque inhérent : critique 0-3 mois, élevé 3-
 
 ### 0-3 mois
 
-- **R1** (🟥 critique) : Authentification multifacteur obligatoire sur tous les accès distants ; Authentification du poste par certificat machine avant l'ouverture du VPN ; Segmentation : limiter ce que voit un utilisateur VPN au strict nécessaire
-- **R2** (🟥 critique) : Journaliser toutes les fonctions de l'outil, pas seulement la consultation ; Alertes sur les volumes de requêtes et d'exports par compte et par session ; Corréler VPN, réseau interne et journaux applicatifs dans un outil de supervision
-- **R6** (🟥 critique) : Alerter les clients sur les risques d'hameçonnage et de fraude au prélèvement ; Surveiller les motifs de fraude liés aux comptes exposés
-- **R4** (🟥 critique) : Fixer des durées de conservation par catégorie de données et les faire appliquer par le système ; Purger les dossiers échus, n'archiver que le nécessaire comptable, en accès restreint
+- **R1** (critique) : Authentification multifacteur obligatoire sur tous les accès distants ; Authentification du poste par certificat machine avant l'ouverture du VPN ; Segmentation : limiter ce que voit un utilisateur VPN au strict nécessaire
+- **R2** (critique) : Journaliser toutes les fonctions de l'outil, pas seulement la consultation ; Alertes sur les volumes de requêtes et d'exports par compte et par session ; Corréler VPN, réseau interne et journaux applicatifs dans un outil de supervision
+- **R6** (critique) : Alerter les clients sur les risques d'hameçonnage et de fraude au prélèvement ; Surveiller les motifs de fraude liés aux comptes exposés
+- **R4** (critique) : Fixer des durées de conservation par catégorie de données et les faire appliquer par le système ; Purger les dossiers échus, n'archiver que le nécessaire comptable, en accès restreint
 
 ### 3-6 mois
 
-- **R3** (🟧 élevé) : Hachage des mots de passe avec Argon2id ou bcrypt, et rehachage à la prochaine connexion ; Authentification multifacteur sur l'outil lui-même
-- **R5** (🟧 élevé) : Modèle de notification validé à l'avance par le DPO et le juridique ; Inclure conséquences probables, mesures de protection et point de contact ; Exercice annuel de gestion de crise incluant la communication
+- **R3** (élevé) : Hachage des mots de passe avec Argon2id ou bcrypt, et rehachage à la prochaine connexion ; Authentification multifacteur sur l'outil lui-même
+- **R5** (élevé) : Modèle de notification validé à l'avance par le DPO et le juridique ; Inclure conséquences probables, mesures de protection et point de contact ; Exercice annuel de gestion de crise incluant la communication
 
 ## Sources
 
