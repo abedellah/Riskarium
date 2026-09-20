@@ -1,0 +1,191 @@
+title: "Étude de cas : violation de données Free Mobile / Free (octobre 2024)"
+organisation: "Free Mobile et Free (groupe Iliad)"
+
+disclaimer: >-
+  Analyse externe et indépendante, fondée uniquement sur des sources publiques (décision
+  et communiqué de la CNIL). Elle ne décrit pas l'état interne actuel des sociétés
+  concernées : les faits renvoient aux sources, les cotations sont un jugement d'analyste
+  à visée pédagogique.
+
+context: >-
+  Entre le 28 septembre et le 22 octobre 2024, un attaquant s'est connecté au réseau
+  privé virtuel (VPN) de l'opérateur, puis à l'outil de gestion des abonnés, et a accédé
+  aux données de plus de 24 millions de contrats. À la suite de plus de 2 500 plaintes, la
+  CNIL a sanctionné Free Mobile (27 M€) et Free (15 M€) en janvier 2026 pour des
+  manquements aux articles 32, 34 et 5-1-e du RGPD. Cette étude reprend ces manquements
+  comme scénarios de risque, les rattache aux référentiels ISO/IEC 27001:2022 et NIST CSF
+  2.0, et propose un plan de traitement.
+
+sources:
+  - id: S1
+    title: "CNIL, Violation de données : sanction de 42 millions d'euros à l'encontre des sociétés FREE MOBILE et FREE"
+    url: "https://www.cnil.fr/fr/sanction-free-2026"
+    date: "2026-01-14"
+  - id: S2
+    title: "CNIL, Délibération SAN-2026-001 (FREE MOBILE), Légifrance"
+    url: "https://www.legifrance.gouv.fr/cnil/id/CNILTEXT000053352664"
+    date: "2026-01"
+
+risks:
+  - id: R1
+    title: "Compromission de l'accès distant (VPN)"
+    scenario: >-
+      Un attaquant disposant d'identifiants valides se connecte au VPN d'entreprise, qui
+      ne vérifie ni le poste utilisé ni un second facteur, puis progresse vers les
+      systèmes internes.
+    likelihood: 4
+    impact: 5
+    facts:
+      - kind: documented
+        source: S1
+        text: "La CNIL juge la procédure d'authentification au VPN insuffisamment robuste (article 32 du RGPD)."
+      - kind: documented
+        source: S2
+        text: "L'authentification multifacteur des utilisateurs et l'authentification du poste nomade (certificat machine) faisaient défaut sur l'accès distant."
+      - kind: documented
+        source: S2
+        text: "L'attaquant s'est d'abord connecté au VPN, puis à l'outil de gestion des abonnés."
+    iso_controls: [A.8.5, A.5.15, A.5.17, A.8.20, A.6.7]
+    nist_csf: [PR.AA]
+    regulations: ["RGPD, art. 32"]
+    treatment:
+      decision: reduce
+      actions:
+        - "Authentification multifacteur obligatoire sur tous les accès distants"
+        - "Authentification du poste par certificat machine avant l'ouverture du VPN"
+        - "Segmentation : limiter ce que voit un utilisateur VPN au strict nécessaire"
+      likelihood: 2
+      impact: 4
+
+  - id: R2
+    title: "Extraction massive de données non détectée"
+    scenario: >-
+      Une fois dans l'outil de gestion des abonnés, l'attaquant interroge la base à grande
+      échelle sans déclencher d'alerte, et l'extraction dure plusieurs semaines.
+    likelihood: 4
+    impact: 5
+    facts:
+      - kind: documented
+        source: S1
+        text: "La CNIL juge les mesures de détection des comportements anormaux inefficaces (article 32 du RGPD)."
+      - kind: documented
+        source: S2
+        text: "Le dispositif d'analyse des connexions VPN s'est avéré inefficace face à l'attaque."
+      - kind: documented
+        source: S2
+        text: "Seule la fonctionnalité « consultation » de l'outil de gestion des abonnés était analysée par un système générant des alertes."
+      - kind: documented
+        source: S2
+        text: "L'attaque s'est déroulée du 28 septembre au 22 octobre 2024 ; elle a duré près de quatre semaines."
+    iso_controls: [A.8.16, A.8.15, A.5.25, A.5.24]
+    nist_csf: [DE.CM, DE.AE]
+    regulations: ["RGPD, art. 32"]
+    treatment:
+      decision: reduce
+      actions:
+        - "Journaliser toutes les fonctions de l'outil, pas seulement la consultation"
+        - "Alertes sur les volumes de requêtes et d'exports par compte et par session"
+        - "Corréler VPN, réseau interne et journaux applicatifs dans un outil de supervision"
+      likelihood: 2
+      impact: 4
+
+  - id: R3
+    title: "Comptes de l'outil de gestion exposés (stockage faible des mots de passe)"
+    scenario: >-
+      Les mots de passe des utilisateurs de l'outil de gestion sont stockés avec un
+      mécanisme trop faible ; une fuite de la base de comptes permet de les retrouver et
+      de les réutiliser.
+    likelihood: 3
+    impact: 4
+    facts:
+      - kind: documented
+        source: S2
+        text: "Les mots de passe des utilisateurs de l'outil n'étaient pas protégés par l'un des algorithmes recommandés par l'ANSSI et la CNIL (Argon2, yescrypt, scrypt, balloon, bcrypt ou, dans une moindre mesure, PBKDF2)."
+      - kind: inferred
+        source: null
+        text: "La vraisemblance est estimée à 3 : la faiblesse est avérée, mais rien n'établit qu'elle ait été exploitée dans cet incident."
+    iso_controls: [A.8.24, A.5.17, A.8.5]
+    nist_csf: [PR.AA, PR.DS]
+    regulations: ["RGPD, art. 32"]
+    treatment:
+      decision: reduce
+      actions:
+        - "Hachage des mots de passe avec Argon2id ou bcrypt, et rehachage à la prochaine connexion"
+        - "Authentification multifacteur sur l'outil lui-même"
+      likelihood: 1
+      impact: 4
+
+  - id: R4
+    title: "Données d'anciens abonnés conservées trop longtemps"
+    scenario: >-
+      Des millions de dossiers d'anciens abonnés restent dans les systèmes sans
+      justification : en cas de compromission, le nombre de personnes touchées augmente
+      sans aucune utilité pour l'entreprise.
+    likelihood: 5
+    impact: 3
+    facts:
+      - kind: documented
+        source: S1
+        text: "Free Mobile n'avait pas mis en place de tri des données des anciens abonnés pour ne conserver que ce qui était nécessaire à des fins comptables avant suppression (article 5-1-e du RGPD)."
+      - kind: documented
+        source: S2
+        text: "Environ trois millions de contrats résiliés (sur quinze millions) étaient conservés depuis plus de dix ans."
+    iso_controls: [A.8.10, A.5.33, A.5.34, A.5.31]
+    nist_csf: [GV.PO, PR.DS]
+    regulations: ["RGPD, art. 5-1-e"]
+    treatment:
+      decision: reduce
+      actions:
+        - "Fixer des durées de conservation par catégorie de données et les faire appliquer par le système"
+        - "Purger les dossiers échus, n'archiver que le nécessaire comptable, en accès restreint"
+      likelihood: 1
+      impact: 3
+
+  - id: R5
+    title: "Information insuffisante des personnes concernées"
+    scenario: >-
+      Après une violation, le message envoyé aux clients n'explique pas les conséquences ni
+      les gestes de protection, ce qui les laisse exposés et expose l'entreprise à une
+      sanction.
+    likelihood: 4
+    impact: 3
+    facts:
+      - kind: documented
+        source: S1
+        text: "Le courriel de notification ne comprenait pas toutes les informations nécessaires : conséquences de la violation et mesures que les personnes pouvaient prendre pour se protéger (article 34 du RGPD)."
+    iso_controls: [A.5.26, A.5.24, A.5.5, A.5.34, A.5.31]
+    nist_csf: [RS.CO]
+    regulations: ["RGPD, art. 34"]
+    treatment:
+      decision: reduce
+      actions:
+        - "Modèle de notification validé à l'avance par le DPO et le juridique"
+        - "Inclure conséquences probables, mesures de protection et point de contact"
+        - "Exercice annuel de gestion de crise incluant la communication"
+      likelihood: 1
+      impact: 3
+
+  - id: R6
+    title: "Réutilisation des données volées (hameçonnage, fraude)"
+    scenario: >-
+      Les données exfiltrées (identité, coordonnées, contrat, IBAN) servent à des
+      campagnes d'hameçonnage ciblé et à des tentatives de fraude au prélèvement.
+    likelihood: 4
+    impact: 5
+    facts:
+      - kind: documented
+        source: S2
+        text: "Les données concernées comprennent identité, coordonnées, données contractuelles, date et lieu de naissance, identifiant client et, pour les clients des deux sociétés, l'IBAN."
+      - kind: inferred
+        source: null
+        text: "L'usage malveillant de ces données (hameçonnage, fraude) est une conséquence plausible de leur exposition ; la décision ne le constate pas."
+    iso_controls: [A.5.26, A.5.34]
+    nist_csf: [RS.CO]
+    regulations: ["RGPD, art. 34"]
+    treatment:
+      decision: reduce
+      actions:
+        - "Alerter les clients sur les risques d'hameçonnage et de fraude au prélèvement"
+        - "Surveiller les motifs de fraude liés aux comptes exposés"
+      likelihood: 3
+      impact: 4
