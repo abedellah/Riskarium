@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/banner.svg?v=2" alt="Riskarium, registre de risques et rattachement à l'ISO 27001" width="100%">
+</p>
+
 # Riskarium
 
 Petit outil qui transforme une analyse de risques décrite en YAML en **registre de
